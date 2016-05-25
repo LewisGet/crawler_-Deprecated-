@@ -63,6 +63,8 @@ class crawler
 
     public function preLoadHtml ($content)
     {
+        $this->createTextFile($content);
+
         return $content;
     }
 
@@ -92,17 +94,17 @@ class crawler
 
         return $linksUrl;
     }
+
+    public function createTextFile ($content)
+    {
+        $content = strip_tags($content);
+
+        $fileName = md5($content);
+
+        file_put_contents ("data/{$fileName}.txt", $content);
+    }
 }
 
 $c = new crawler();
 
 $c->init($url, $level);
-
-foreach ($c->allUrls as $key => $url)
-{
-    $content = file_get_contents($url);
-
-    $content = strip_tags($content);
-
-    file_put_contents ("data/{$key}.txt", $content);
-}
