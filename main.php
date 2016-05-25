@@ -72,12 +72,11 @@ class crawler
 
     public function getDomLinks (DOMDocument $dom)
     {
-        $xpath = new DOMXPath($dom);
-        $links = $xpath->query('//a/@href');
+        $links = $dom->documentElement->getElementsByTagName('a');
 
         foreach ($links as $link)
         {
-            $url = $link->nodeValue;
+            $url = $link->getAttribute('href');
             $url = $this->urlDebug($url);
 
             if (! empty($url))
@@ -131,13 +130,13 @@ class crawler
     {
         $tidy = new tidy();
 
-        // fixed error html
-        $content = $tidy->repairString($content);
-
         // 防止大寫的 html tag
         $content = strtolower($content);
 
         $content = strip_tags($content, "<a>");
+
+        // fixed error html
+        $content = $tidy->repairString($content);
 
         return $content;
     }
