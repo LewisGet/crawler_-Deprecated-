@@ -97,6 +97,10 @@ class crawler
 
     public function createTextFile ($content)
     {
+        // remove javascript
+        $content = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', "", $content);
+
+        // remove html
         $content = strip_tags($content);
 
         $fileName = md5($content);
