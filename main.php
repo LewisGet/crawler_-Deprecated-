@@ -93,7 +93,7 @@ class crawler
         // 開頭不是 http, https
         if (strpos($url, "http") !== 0)
         {
-            $url = $this->baseUrl . $url;
+            $url = $this->baseUrl . "/" . $url;
         }
         elseif (strpos($url, $this->baseUrl) !== 0)
         {
