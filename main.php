@@ -133,6 +133,11 @@ class crawler
 
     public function clearUpHtml ($content)
     {
+        $tidy = new tidy();
+
+        // fixed error html
+        $content = $tidy->repairString($content);
+
         // 防止大寫的 html tag
         $content = strtolower($content);
 
