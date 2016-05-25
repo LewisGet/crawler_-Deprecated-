@@ -77,30 +77,39 @@ class crawler
         foreach ($links as $link)
         {
             $url = $link->getAttribute("href");
+            $url = $this->urlDebug($url);
 
-            // 開頭不是 http, https
-            if (strpos($url, "http") !== 0)
+            if (! empty($url))
             {
-                $url = $this->baseUrl . $url;
+                $linksUrl[] = $url;
             }
-            elseif (strpos($url, $this->baseUrl) !== 0)
-            {
-                // 跨站網址不收入
-                continue;
-            }
-
-            if ($this->isPdfFile($url))
-            {
-                $this->pdfFile($url);
-
-                // 存取完 pdf 後離開。
-                continue;
-            }
-
-            $linksUrl[] = $url;
         }
 
         return $linksUrl;
+    }
+
+    public function urlDebug ($url)
+    {
+        // 開頭不是 http, https
+        if (strpos($url, "http") !== 0)
+        {
+            $url = $this->baseUrl . $url;
+        }
+        elseif (strpos($url, $this->baseUrl) !== 0)
+        {
+            // 跨站網址不收入
+            return "";
+        }
+
+        if ($this->isPdfFile($url))
+        {
+            $this->pdfFile($url);
+
+            // 存取完 pdf 後離開。
+            return "";
+        }
+
+        return $url;
     }
 
     public function isPdfFile ($url)
