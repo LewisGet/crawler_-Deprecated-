@@ -100,6 +100,9 @@ class crawler
         // remove javascript
         $content = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', "", $content);
 
+        // remove style
+        $content = preg_replace('/<style\b[^>]*>(.*?)<\/style>/is', "", $content);
+
         // remove html
         $content = strip_tags($content);
 
