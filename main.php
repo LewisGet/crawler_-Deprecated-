@@ -63,7 +63,7 @@ class crawler
 
     public function preLoadHtml ($content)
     {
-        $this->clearUpHtml($content);
+        $content = $this->clearUpHtml($content);
 
         $this->createTextFile($content);
 
@@ -72,13 +72,12 @@ class crawler
 
     public function getDomLinks (DOMDocument $dom)
     {
-        $links = $dom->getElementsByTagName("a");
-
-        $linksUrl = array();
+        $xpath = new DOMXPath($dom);
+        $links = $xpath->query('//a/@href');
 
         foreach ($links as $link)
         {
-            $url = $link->getAttribute("href");
+            $url = $link->nodeValue;
             $url = $this->urlDebug($url);
 
             if (! empty($url))
