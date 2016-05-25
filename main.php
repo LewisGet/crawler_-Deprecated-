@@ -120,14 +120,11 @@ class crawler
 
     public function pdfFile ($url)
     {
-        // get file and con to txt
-        system("cd data; wget -o tmp.pdf {$url}; pdftotext tmp.pdf; rm tmp.pdf; cd ..");
+        $content = file_get_contents($url);
 
-        $content = file_get_contents("data/tmp.txt");
         $filename = md5($content);
 
-        // rename
-        system("mv data/tmp.txt data/{$filename}.txt");
+        file_put_contents ("data/{$filename}.pdf", $content);
     }
 
     public function clearUpHtml ($content)
