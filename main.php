@@ -63,6 +63,8 @@ class crawler
 
     public function preLoadHtml ($content)
     {
+        $this->clearUpHtml($content);
+
         $this->createTextFile($content);
 
         return $content;
@@ -129,14 +131,46 @@ class crawler
         system("mv data/tmp.txt data/{$filename}.txt");
     }
 
-    public function createTextFile ($content)
+    public function clearUpHtml ($content)
     {
+        // 防止大寫的 html tag
+        $content = strtolower($content);
+
         // remove javascript
         $content = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', "", $content);
 
         // remove style
         $content = preg_replace('/<style\b[^>]*>(.*?)<\/style>/is', "", $content);
 
+        // remove style in attr
+        $content = preg_replace('/(<[^>]+) style=".*?"/i', "", $content);
+
+        // remove onclick in attr
+        $content = preg_replace('/(<[^>]+) onclick=".*?"/i', "", $content);
+
+        // remove title in attr
+        $content = preg_replace('/(<[^>]+) title=".*?"/i', "", $content);
+
+        // remove class in attr
+        $content = preg_replace('/(<[^>]+) class=".*?"/i', "", $content);
+
+        // remove all link
+        $content = preg_replace('/<link\b[^>]*>(.*?)\/>/is', "", $content);
+
+        // remove width in attr
+        $content = preg_replace('/(<[^>]+) width=".*?"/i', "", $content);
+
+        // remove height in attr
+        $content = preg_replace('/(<[^>]+) height=".*?"/i', "", $content);
+
+        // remove all images
+        $content = preg_replace('/<img\b[^>]*>(.*?)>/is', "", $content);
+
+        return $content;
+    }
+
+    public function createTextFile ($content)
+    {
         // remove html
         $content = strip_tags($content);
 
